@@ -13,6 +13,7 @@ function Menu() {
                     NN Hub
                 </Typography>
                 <Button color="inherit" component={Link} to="/">Главная</Button>
+                <Button color="inherit" component={Link} to="/chat">Чат</Button>
                 <Button color="inherit" component={Link} to="/#about">О нас</Button>
                 <Button color="inherit" component={Link} to="/#contact">Контакты</Button>
                 {/* другие ссылки здесь */}
