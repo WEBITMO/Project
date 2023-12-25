@@ -6,6 +6,8 @@ import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import Footer from './components/Footer'
 import ChatPage from "./components/ChatPage";
+import ImageClassificationPage from "./components/ImagePage";
+import SpeechToTextPage from "./components/AudioPage";
 function App() {
     return (
         <Router>
@@ -17,6 +19,8 @@ function App() {
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/chat" element={<ChatPage />} />
+                        <Route path="/image" element={<ImageClassificationPage />} />
+                        <Route path="/audio" element={<SpeechToTextPage />} />
                         {/* Определите другие маршруты здесь */}
                     </Routes>
                 </div>

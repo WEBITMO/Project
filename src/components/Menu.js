@@ -14,6 +14,8 @@ function Menu() {
                 </Typography>
                 <Button color="inherit" component={Link} to="/">Главная</Button>
                 <Button color="inherit" component={Link} to="/chat">Чат</Button>
+                <Button color="inherit" component={Link} to="/image">Изображение</Button>
+                <Button color="inherit" component={Link} to="/audio">Аудио</Button>
                 <Button color="inherit" component={Link} to="/#about">О нас</Button>
                 <Button color="inherit" component={Link} to="/#contact">Контакты</Button>
                 {/* другие ссылки здесь */}
