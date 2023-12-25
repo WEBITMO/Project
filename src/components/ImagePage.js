@@ -7,6 +7,7 @@ const ImageClassificationPage = () => {
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [prediction, setPrediction] = useState(null);
+    // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
