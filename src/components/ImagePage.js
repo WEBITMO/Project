@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, CircularProgress, List, ListItem, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, List, ListItem, Typography } from '@mui/material';
 
 const ImageClassificationPage = () => {
     const [models, setModels] = useState([]);
