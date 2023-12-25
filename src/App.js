@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Menu from './components/Menu';
 import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
@@ -8,6 +8,16 @@ import Footer from './components/Footer'
 import ChatPage from "./components/ChatPage";
 import ImageClassificationPage from "./components/ImagePage";
 import SpeechToTextPage from "./components/AudioPage";
+const LocationAwareFooter = () => {
+    const location = useLocation();
+
+    if (location.pathname === '/chat') {
+        return null;
+    }
+
+    return <Footer />;
+};
+
 function App() {
     return (
         <Router>
@@ -24,7 +34,7 @@ function App() {
                         {/* Определите другие маршруты здесь */}
                     </Routes>
                 </div>
-                <Footer />
+                <LocationAwareFooter />
             </div>
         </Router>
     );
