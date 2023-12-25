@@ -4,9 +4,6 @@ import MicIcon from '@mui/icons-material/Mic';
 import StopIcon from '@mui/icons-material/Stop';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import SendIcon from '@mui/icons-material/Send';
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import AppBar from "@mui/material/AppBar";
 const ChatPage = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
@@ -52,60 +49,52 @@ const ChatPage = () => {
 
     return (
       <Box display="flex" flexDirection="column" height="100vh">
-        <Box sx={{ maxWidth: 800, width: '100%', margin: 'auto' }}>
-          <AppBar position="static">
-            <Toolbar style={{ justifyContent: 'center' }}>
-              <Button color="inherit">Speech-To-Text</Button>
-              <Button color="inherit">LLM</Button>
-              <Button color="inherit">ImageClassification</Button>
-            </Toolbar>
-          </AppBar>
+        <Box sx={{ flexGrow: 1, overflow: 'auto', maxWidth: 500, width: '100%', mx: 'auto' }}>
+          <Paper elevation={3} sx={{ maxHeight: 'calc(100vh - 180px)', overflow: 'auto', mb: 2 }}>
+            <List>
+              {messages.map((msg, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={msg} />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" flexGrow={1}>
-          <Box sx={{ maxWidth: 500, width: '100%', margin: 'auto' }}>
-            <Paper elevation={3} sx={{ maxHeight: 'calc(100vh - 128px)', overflow: 'auto', mb: 2 }}>
-              <List>
-                {messages.map((msg, index) => (
-                  <ListItem key={index}>
-                    <ListItemText primary={msg} />
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
-                  <Box display="flex" alignItems="center">
-                          <TextField
-                            fullWidth
-                            variant="outlined"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Введите сообщение..."
-                          />
-                          <IconButton color="primary" onClick={sendMessage}>
-                              <SendIcon />
-                          </IconButton>
-                          {isUploading && <CircularProgress size={24} />}
-                          <IconButton color="primary" onClick={startRecording} disabled={recording}>
-                              <MicIcon />
-                          </IconButton>
-                          {recording && <CircularProgress size={24} />}
-                          <IconButton color="primary" onClick={stopRecording} disabled={!recording}>
-                              <StopIcon />
-                          </IconButton>
-                          <label htmlFor="file-upload">
-                              <input
-                                accept="*/*"
-                                id="file-upload"
-                                type="file"
-                                hidden
-                                onChange={handleFileChange}
-                              />
-                              <IconButton color="primary" component="span">
-                                  <UploadFileIcon />
-                              </IconButton>
-                          </label>
-                  </Box>
-              </Box>
+
+        <Box sx={{ maxWidth: 500, width: '100%', mx: 'auto' }}>
+          <Box display="flex" alignItems="center">
+            <TextField
+              fullWidth
+              variant="outlined"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Введите сообщение..."
+            />
+            <IconButton color="primary" onClick={sendMessage}>
+              <SendIcon />
+            </IconButton>
+            {isUploading && <CircularProgress size={24} />}
+            <IconButton color="primary" onClick={startRecording} disabled={recording}>
+              <MicIcon />
+            </IconButton>
+            {recording && <CircularProgress size={24} />}
+            <IconButton color="primary" onClick={stopRecording} disabled={!recording}>
+              <StopIcon />
+            </IconButton>
+            <label htmlFor="file-upload">
+              <input
+                accept="*/*"
+                id="file-upload"
+                type="file"
+                hidden
+                onChange={handleFileChange}
+              />
+              <IconButton color="primary" component="span">
+                <UploadFileIcon />
+              </IconButton>
+            </label>
           </Box>
+        </Box>
       </Box>
     );
 };
