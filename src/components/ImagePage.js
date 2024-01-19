@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Box, Button, CircularProgress, List, ListItem, Typography} from '@mui/material';
+import { Box, Button, CircularProgress, Typography, Select, MenuItem } from '@mui/material';
 
 const ImageClassificationPage = () => {
     const [models, setModels] = useState([]);
@@ -13,23 +13,36 @@ const ImageClassificationPage = () => {
     const videoRef = useRef(null);
     const streamRef = useRef(null);
     const streamIntervalRef = useRef(null);
+    const [isWebcamActive, setIsWebcamActive] = useState(false);
 
     useEffect(() => {
         fetchModels();
         return () => {
-            if (streamRef.current) {
-                streamRef.current.getTracks().forEach(track => track.stop());
-            }
+            stopWebcam();
         };
     }, []);
 
     const startWebcam = async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({video: true});
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             videoRef.current.srcObject = stream;
             streamRef.current = stream;
+            setIsWebcamActive(true); // Set the webcam state to active
         } catch (error) {
             console.error('Error accessing webcam:', error);
+        }
+    };
+
+    const stopWebcam = () => {
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach(track => track.stop());
+            videoRef.current.srcObject = null;
+            streamRef.current = null;
+            setIsWebcamActive(false);
+
+            if (streaming) {
+                stopStreaming();
+            }
         }
     };
 
@@ -64,12 +77,12 @@ const ImageClassificationPage = () => {
     };
 
     const toggleStreaming = () => {
-        setStreaming(!streaming);
-        if (!streaming) {
-            startStreaming();
-        } else {
+        if (streaming) {
             stopStreaming();
+        } else if (streamRef.current && selectedModel) {
+            startStreaming();
         }
+        setStreaming(!streaming);
     };
 
     const startStreaming = () => {
@@ -77,7 +90,7 @@ const ImageClassificationPage = () => {
             if (videoRef.current) {
                 captureImage();
             }
-        }, 1000); // 1 fps
+        }, 1000);
     };
 
     const stopStreaming = () => {
@@ -85,6 +98,7 @@ const ImageClassificationPage = () => {
             clearInterval(streamIntervalRef.current);
             streamIntervalRef.current = null;
         }
+        setStreaming(false);
     };
 
     const fetchModels = async () => {
@@ -97,7 +111,8 @@ const ImageClassificationPage = () => {
         }
     };
 
-    const handleModelSelect = async (modelName) => {
+    const handleModelSelect = async (event) => {
+        const modelName = event.target.value;
         setLoading(true);
         setSelectedModel(modelName);
         try {
@@ -106,7 +121,7 @@ const ImageClassificationPage = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({name: modelName}),
+                body: JSON.stringify({ name: modelName }),
             });
         } catch (error) {
             console.error('Error loading model:', error);
@@ -143,29 +158,46 @@ const ImageClassificationPage = () => {
         <Box sx={{maxWidth: 600, margin: 'auto'}}>
             <Typography variant="h4" sx={{textAlign: 'center', mb: 2}}>Image Prediction</Typography>
 
-            <video ref={videoRef} autoPlay style={{ width: '100%' }} />
+            <Box sx={{ mt: 2, mb: 2 }}>
+                {/*<Typography variant="h6">Choose Model:</Typography>*/}
+                <Select
+                    value={selectedModel}
+                    onChange={handleModelSelect}
+                    displayEmpty
+                    fullWidth
+                >
+                    <MenuItem value="" disabled>Select a model</MenuItem>
+                    {models.map((model, index) => (
+                        <MenuItem key={index} value={model}>{model}</MenuItem>
+                    ))}
+                </Select>
+            </Box>
+
+            <video ref={videoRef} autoPlay style={{ width: '100%', display: isWebcamActive ? 'block' : 'none' }} />
 
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, my: 2 }}>
-                <Button variant="contained" onClick={startWebcam}>Start Webcam</Button>
-                <Button variant="contained" onClick={captureImage} disabled={!streamRef.current}>Capture Image</Button>
+                {streamRef.current ? (
+                    <Button variant="contained" onClick={stopWebcam}>Stop Webcam</Button>
+                ) : (
+                    <Button variant="contained" onClick={startWebcam}>Start Webcam</Button>
+                )}
+                <Button
+                    variant="contained"
+                    onClick={captureImage}
+                    disabled={!streamRef.current || !selectedModel || streaming}
+                >
+                    Capture Image
+                </Button>
                 <Button
                     variant="contained"
                     onClick={toggleStreaming}
-                    disabled={!streamRef.current}
+                    disabled={!streamRef.current || !selectedModel}
                 >
                     {streaming ? 'Stop Streaming' : 'Start Streaming'}
                 </Button>
             </Box>
 
-            <List>
-                {models.map((model, index) => (
-                    <ListItem key={index} button onClick={() => handleModelSelect(model)}>
-                        {model}
-                    </ListItem>
-                ))}
-            </List>
-
-            <Typography variant="h6" sx={{mt: 2}}>Model: {selectedModel}</Typography>
+            {/*<Typography variant="h6" sx={{mt: 2}}>Model: {selectedModel}</Typography>*/}
 
             <Box sx={{mt: 2}}>
                 <input
@@ -177,20 +209,19 @@ const ImageClassificationPage = () => {
                     variant="contained"
                     color="primary"
                     onClick={handlePredict}
-                    disabled={!image || loading}
+                    disabled={!image || !selectedModel}
                 >
                     Predict
                 </Button>
             </Box>
 
-            {loading && <CircularProgress />}
-
             {prediction && (
-                <Box sx={{mt: 2}}>
-                    <Typography variant="h6">Prediction Results:</Typography>
-                    <pre>{JSON.stringify(prediction, null, 2)}</pre>
+                <Box sx={{ mt: 2 }}>
+                    <Typography variant="h6">Prediction: {`${prediction.predicted_class}`}</Typography>
                 </Box>
             )}
+
+            {loading && <CircularProgress />}
         </Box>
     );
 };
