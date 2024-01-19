@@ -8,6 +8,7 @@ import ChatPage from "./components/ChatPage";
 import AudioPage from "./components/AudioPage";
 import ImagePage from "./components/ImagePage";
 import LocationAwareFooter from "./components/LocationAwareFooter";
+import ImageSegmentationPage from "./components/ImageSegmentationPage";
 function App() {
 
 return (
@@ -22,6 +23,7 @@ return (
                   <Route path="/chat" element={<ChatPage />} />
                   <Route path="/audio" element={<AudioPage/>}/>
                   <Route path="/image" element={<ImagePage/>}/>
+                  <Route path="/image_segmentation" element={<ImageSegmentationPage/>}/>
                   {/* Define other routes here */}
               </Routes>
           </div>
