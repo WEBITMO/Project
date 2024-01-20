@@ -7,6 +7,7 @@ const SpeechToTextPage = () => {
     const [audio, setAudio] = useState(null);
     const [loading, setLoading] = useState(false);
     const [prediction, setPrediction] = useState(null);
+    // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
@@ -68,7 +69,6 @@ const SpeechToTextPage = () => {
     return (
         <Box sx={{ maxWidth: 600, margin: 'auto' }}>
             <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>Голос в Текст</Typography>
-
             <List>
                 {models.map((model, index) => (
                     <ListItem key={index} button onClick={() => handleModelSelect(model)}>

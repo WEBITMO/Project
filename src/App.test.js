@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-// eslint-disable-next-line no-undef
+// eslint-disable-next  -line no-undef
 test('renders learn react link', () => {
   // eslint-disable-next-line react/react-in-jsx-scope
   render(<App />);
