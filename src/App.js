@@ -9,7 +9,6 @@ import AudioPage from "./components/AudioPage";
 import ImagePage from "./components/ImagePage";
 import LocationAwareFooter from "./components/LocationAwareFooter";
 import ImageSegmentationPage from "./components/ImageSegmentationPage";
-import Analytics from './components/Analytics';
 function App() {
 return (
   <Router>
