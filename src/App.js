@@ -16,7 +16,6 @@ return (
       <div id="root">
           <Menu />
           <div className="content">
-              <Analytics/>
               <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
