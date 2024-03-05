@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Menu from './components/Menu';
 import HomePage from './components/HomePage';
@@ -9,8 +9,8 @@ import AudioPage from "./components/AudioPage";
 import ImagePage from "./components/ImagePage";
 import LocationAwareFooter from "./components/LocationAwareFooter";
 import ImageSegmentationPage from "./components/ImageSegmentationPage";
+import Analytics from './components/Analytics';
 function App() {
-
 return (
   <Router>
       <div id="root">

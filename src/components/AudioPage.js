@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, CircularProgress, List, ListItem, Typography } from '@mui/material';
+import {Box, Button, CircularProgress, MenuItem, Select, Typography} from '@mui/material';
 
 const SpeechToTextPage = () => {
     const [models, setModels] = useState([]);
@@ -69,13 +69,18 @@ const SpeechToTextPage = () => {
     return (
         <Box sx={{ maxWidth: 600, margin: 'auto' }}>
             <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>Голос в Текст</Typography>
-            <List>
+            <Select
+              value={selectedModel}
+              onChange={handleModelSelect}
+              displayEmpty
+              fullWidth
+              sx={{ mb: 2 }}
+            >
+                <MenuItem value="" disabled>Select a model</MenuItem>
                 {models.map((model, index) => (
-                    <ListItem key={index} button onClick={() => handleModelSelect(model)}>
-                        {model}
-                    </ListItem>
+                  <MenuItem key={index} value={model}>{model}</MenuItem>
                 ))}
-            </List>
+            </Select>
 
             <Typography variant="h6" sx={{ mt: 2 }}>Модель: {selectedModel}</Typography>
 
