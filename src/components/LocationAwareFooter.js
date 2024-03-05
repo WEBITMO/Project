@@ -5,8 +5,7 @@ import React from "react";
 const LocationAwareFooter = () => {
   const location = useLocation();
 
-  if (location.pathname === '/chat' || location.pathname === '/image' || location.pathname === '/audio') {
-
+  if (location.pathname === '/chat' || location.pathname === '/image' || location.pathname === '/audio' || location.pathname === '/image_segmentation') {
     return null;
   }
 

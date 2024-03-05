@@ -105,7 +105,7 @@ const SpeechToTextPage = () => {
             {prediction && (
                 <Box sx={{ mt: 2 }}>
                     <Typography variant="h6">Prediction Results:</Typography>
-                    <Typography>{prediction.prediction}</Typography>
+                    <Typography>{prediction.transcribed_text}</Typography>
                 </Box>
             )}
         </Box>
