@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import {
     AppBar,
     Toolbar,
@@ -22,58 +24,86 @@ import LogoLink from "./LogoLink";
 const MainLayout = () => {
     // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [parameters, setParameters] = useState({
+        pipelineId: null,
+        sort: 'trending',
+        page: 1,
+        searchQuery: '',
+    });
     const [pipelines, setPipelines] = useState([]);
     const [models, setModels] = useState([]);
-    const [selectedPipelineId, setSelectedPipelineId] = useState(null);
-    const [sortAnchorEl, setSortAnchorEl] = useState(null);
-    const [sort, setSort] = useState('trending');
-    const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [numTotalItems, setNumTotalItems] = useState(0);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [sortAnchorEl, setSortAnchorEl] = useState(null);
 
     useEffect(() => {
         fetchPipelines();
     }, []);
 
     useEffect(() => {
-        fetchModels(selectedPipelineId, page, searchQuery);
-    }, [selectedPipelineId, sort, page, searchQuery]);
+        const params = queryString.parse(location.search);
+        const updatedParameters = {
+            pipelineId: params.pipeline || null,
+            page: parseInt(params.page, 10) || 1,
+            searchQuery: params.search || '',
+            sort: params.sort || 'trending'
+        };
+
+        // Check if parameters actually changed to avoid unnecessary updates
+        if (JSON.stringify(parameters) !== JSON.stringify(updatedParameters)) {
+            setParameters(updatedParameters);
+        }
+    }, [location.search]);
+
+    useEffect(() => {
+        fetchModels();
+    }, [location.search]);
+
+    useEffect(() => {
+        const query = queryString.stringify({
+            page: parameters.page,
+            search: encodeURIComponent(parameters.searchQuery),
+            sort: parameters.sort,
+            pipeline: parameters.pipelineId
+        });
+
+        const newSearch = `?${query}`;
+        if (location.search !== newSearch) {
+            navigate(newSearch);
+        }
+    }, [parameters]);
 
     const fetchPipelines = async () => {
         const response = await axios.get(`${baseUrl}/api/v1/pipelines`);
         setPipelines(response.data);
     };
 
-    const fetchModels = async (pipelineId, page = 1, search = '') => {
+    const fetchModels = useCallback(async () => {
+        const { pipelineId, sort, page, searchQuery } = parameters;
         let url = `${baseUrl}/api/v1/models?sort=${sort}&p=${page}`;
-        if (pipelineId) {
-            url += `&pipeline=${pipelineId}`;
-        }
-        if (search) {
-            url += `&search=${encodeURIComponent(search)}`;
-        }
+        if (pipelineId) url += `&pipeline=${pipelineId}`;
+        if (searchQuery) url += `&search=${encodeURIComponent(searchQuery)}`;
+
         const response = await axios.get(url);
         setModels(response.data.models);
-        const numTotalItems = response.data.numTotalItems;
-        const numItemsPerPage = response.data.numItemsPerPage;
-        setNumTotalItems(numTotalItems);
-        setTotalPages(Math.ceil(numTotalItems / numItemsPerPage));
-    };
+        setNumTotalItems(response.data.numTotalItems);
+        setTotalPages(Math.ceil(response.data.numTotalItems / response.data.numItemsPerPage));
+    }, [parameters]);
 
     const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+        setParameters(prev => ({ ...prev, searchQuery: event.target.value }));
     };
 
     const handleSearchSubmit = (event) => {
         event.preventDefault();
-        if (selectedPipelineId) {
-            fetchModels(selectedPipelineId, page, searchQuery);
-        }
+        fetchModels();
     };
 
     const handlePipelineClick = async (pipelineId) => {
-        setSelectedPipelineId(pipelineId);
+        setParameters(prev => ({ ...prev, pipelineId, page: 1 }));
     };
 
     const handleSortMenuClick = (event) => {
@@ -82,10 +112,8 @@ const MainLayout = () => {
 
     const handleSortMenuClose = (sortOption) => {
         setSortAnchorEl(null);
-        if (sortOption && sortOption !== sort) {
-            setSort(sortOption);
-            setPage(1);
-            setSearchQuery('');
+        if (sortOption) {
+            setParameters(prev => ({ ...prev, sort: sortOption, page: 1, searchQuery: '' }));
         }
     };
 
@@ -96,7 +124,7 @@ const MainLayout = () => {
     };
 
     const handlePageChange = (event, value) => {
-        setPage(value);
+        setParameters(prev => ({ ...prev, page: value }));
     };
 
     return (
@@ -112,7 +140,7 @@ const MainLayout = () => {
                             <InputBase
                                 placeholder="Filter by name…"
                                 inputProps={{ 'aria-label': 'filter by name' }}
-                                value={searchQuery}
+                                value={parameters.searchQuery}
                                 onChange={handleSearchChange}
                                 sx={{ color: 'white', ml: 1, flex: 1 }}
                             />
@@ -165,7 +193,7 @@ const MainLayout = () => {
                 <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4, backgroundColor: '#fff' }}>
                     <Pagination
                         count={totalPages}
-                        page={page}
+                        page={parameters.page}
                         onChange={handlePageChange}
                         color={"standard"}
                         sx={{

@@ -67,7 +67,7 @@ const getPipelineIcon = (pipeline_tag) => {
 const modelPropTypes = {
     model: PropTypes.shape({
         id: PropTypes.string.isRequired,
-        pipeline_tag: PropTypes.string.isRequired,
+        pipeline_tag: PropTypes.string,
         available: PropTypes.bool.isRequired,
         lastModified: PropTypes.string.isRequired,
         downloads: PropTypes.number.isRequired,
