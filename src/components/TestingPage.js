@@ -13,8 +13,11 @@ import {
     Pagination
 } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
 import axios from 'axios';
 import ModelCard from "./ModelCard";
+import LogoLink from "./LogoLink";
 
 const MainLayout = () => {
     // eslint-disable-next-line no-undef
@@ -26,31 +29,47 @@ const MainLayout = () => {
     const [sort, setSort] = useState('trending');
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [numTotalItems, setNumTotalItems] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        console.log("Fetching pipelines...");
         fetchPipelines();
     }, []);
 
     useEffect(() => {
-        if (selectedPipelineId) {
-            fetchModels(selectedPipelineId, page);
-        }
-    }, [selectedPipelineId, sort, page]);
+        fetchModels(selectedPipelineId, page, searchQuery);
+    }, [selectedPipelineId, sort, page, searchQuery]);
 
     const fetchPipelines = async () => {
-        console.log("Executing fetchPipelines function...");
         const response = await axios.get(`${baseUrl}/api/v1/pipelines`);
         setPipelines(response.data);
     };
 
-    const fetchModels = async (pipelineId, page = 1) => {
-        console.log(`Executing fetchModels function for pipeline: ${pipelineId}, sort: ${sort}, page: ${page}`);
-        const response = await axios.get(`${baseUrl}/api/v1/models?pipeline=${pipelineId}&sort=${sort}&p=${page}`);
+    const fetchModels = async (pipelineId, page = 1, search = '') => {
+        let url = `${baseUrl}/api/v1/models?sort=${sort}&p=${page}`;
+        if (pipelineId) {
+            url += `&pipeline=${pipelineId}`;
+        }
+        if (search) {
+            url += `&search=${encodeURIComponent(search)}`;
+        }
+        const response = await axios.get(url);
         setModels(response.data.models);
         const numTotalItems = response.data.numTotalItems;
         const numItemsPerPage = response.data.numItemsPerPage;
+        setNumTotalItems(numTotalItems);
         setTotalPages(Math.ceil(numTotalItems / numItemsPerPage));
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
+        if (selectedPipelineId) {
+            fetchModels(selectedPipelineId, page, searchQuery);
+        }
     };
 
     const handlePipelineClick = async (pipelineId) => {
@@ -65,6 +84,8 @@ const MainLayout = () => {
         setSortAnchorEl(null);
         if (sortOption && sortOption !== sort) {
             setSort(sortOption);
+            setPage(1);
+            setSearchQuery('');
         }
     };
 
@@ -82,20 +103,35 @@ const MainLayout = () => {
         <Box sx={{display: 'flex', height: '100vh'}}>
             <AppBar position="fixed">
                 <Toolbar>
-                    <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1}}>
-                        Neural Networks HUB
+                    <LogoLink />
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                        Models: {numTotalItems}
                     </Typography>
-                    <IconButton
-                        size="large"
-                        edge="end"
-                        color="inherit"
-                        aria-label="sort"
-                        aria-controls="sort-menu"
-                        aria-haspopup="true"
-                        onClick={handleSortMenuClick}
-                    >
-                        <SortIcon/>
-                    </IconButton>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'grey.900', borderRadius: 1, p: 0.5, ml: 1 }}>
+                            <InputBase
+                                placeholder="Filter by name…"
+                                inputProps={{ 'aria-label': 'filter by name' }}
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                sx={{ color: 'white', ml: 1, flex: 1 }}
+                            />
+                            <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                <SearchIcon />
+                            </IconButton>
+                        </Box>
+                        <IconButton
+                            size="large"
+                            edge="end"
+                            color="inherit"
+                            aria-label="sort"
+                            aria-controls="sort-menu"
+                            aria-haspopup="true"
+                            onClick={handleSortMenuClick}
+                        >
+                            <SortIcon/>
+                        </IconButton>
+                    </Box>
                     <Menu
                         id="sort-menu"
                         anchorEl={sortAnchorEl}
