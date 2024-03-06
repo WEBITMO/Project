@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import {
     AppBar,
     Toolbar,
@@ -13,48 +15,95 @@ import {
     Pagination
 } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
 import axios from 'axios';
 import ModelCard from "./ModelCard";
+import LogoLink from "./LogoLink";
 
 const MainLayout = () => {
     // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [parameters, setParameters] = useState({
+        pipelineId: null,
+        sort: 'trending',
+        page: 1,
+        searchQuery: '',
+    });
     const [pipelines, setPipelines] = useState([]);
     const [models, setModels] = useState([]);
-    const [selectedPipelineId, setSelectedPipelineId] = useState(null);
-    const [sortAnchorEl, setSortAnchorEl] = useState(null);
-    const [sort, setSort] = useState('trending');
-    const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [numTotalItems, setNumTotalItems] = useState(0);
+    const [sortAnchorEl, setSortAnchorEl] = useState(null);
 
     useEffect(() => {
-        console.log("Fetching pipelines...");
         fetchPipelines();
     }, []);
 
     useEffect(() => {
-        if (selectedPipelineId) {
-            fetchModels(selectedPipelineId, page);
+        const params = queryString.parse(location.search);
+        const updatedParameters = {
+            pipelineId: params.pipeline || null,
+            page: parseInt(params.page, 10) || 1,
+            searchQuery: params.search || '',
+            sort: params.sort || 'trending'
+        };
+
+        // Check if parameters actually changed to avoid unnecessary updates
+        if (JSON.stringify(parameters) !== JSON.stringify(updatedParameters)) {
+            setParameters(updatedParameters);
         }
-    }, [selectedPipelineId, sort, page]);
+    }, [location.search]);
+
+    useEffect(() => {
+        fetchModels();
+    }, [location.search]);
+
+    useEffect(() => {
+        const query = queryString.stringify({
+            page: parameters.page,
+            search: encodeURIComponent(parameters.searchQuery),
+            sort: parameters.sort,
+            pipeline: parameters.pipelineId
+        });
+
+        const newSearch = `?${query}`;
+        if (location.search !== newSearch) {
+            navigate(newSearch);
+        }
+    }, [parameters]);
 
     const fetchPipelines = async () => {
-        console.log("Executing fetchPipelines function...");
         const response = await axios.get(`${baseUrl}/api/v1/pipelines`);
         setPipelines(response.data);
     };
 
-    const fetchModels = async (pipelineId, page = 1) => {
-        console.log(`Executing fetchModels function for pipeline: ${pipelineId}, sort: ${sort}, page: ${page}`);
-        const response = await axios.get(`${baseUrl}/api/v1/models?pipeline=${pipelineId}&sort=${sort}&p=${page}`);
+    const fetchModels = useCallback(async () => {
+        const { pipelineId, sort, page, searchQuery } = parameters;
+        let url = `${baseUrl}/api/v1/models?sort=${sort}&p=${page}`;
+        if (pipelineId) url += `&pipeline=${pipelineId}`;
+        if (searchQuery) url += `&search=${encodeURIComponent(searchQuery)}`;
+
+        const response = await axios.get(url);
         setModels(response.data.models);
-        const numTotalItems = response.data.numTotalItems;
-        const numItemsPerPage = response.data.numItemsPerPage;
-        setTotalPages(Math.ceil(numTotalItems / numItemsPerPage));
+        setNumTotalItems(response.data.numTotalItems);
+        setTotalPages(Math.ceil(response.data.numTotalItems / response.data.numItemsPerPage));
+    }, [parameters]);
+
+    const handleSearchChange = (event) => {
+        setParameters(prev => ({ ...prev, searchQuery: event.target.value }));
+    };
+
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
+        fetchModels();
     };
 
     const handlePipelineClick = async (pipelineId) => {
-        setSelectedPipelineId(pipelineId);
+        setParameters(prev => ({ ...prev, pipelineId, page: 1 }));
     };
 
     const handleSortMenuClick = (event) => {
@@ -63,8 +112,8 @@ const MainLayout = () => {
 
     const handleSortMenuClose = (sortOption) => {
         setSortAnchorEl(null);
-        if (sortOption && sortOption !== sort) {
-            setSort(sortOption);
+        if (sortOption) {
+            setParameters(prev => ({ ...prev, sort: sortOption, page: 1, searchQuery: '' }));
         }
     };
 
@@ -75,27 +124,42 @@ const MainLayout = () => {
     };
 
     const handlePageChange = (event, value) => {
-        setPage(value);
+        setParameters(prev => ({ ...prev, page: value }));
     };
 
     return (
         <Box sx={{display: 'flex', height: '100vh'}}>
             <AppBar position="fixed">
                 <Toolbar>
-                    <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1}}>
-                        Neural Networks HUB
+                    <LogoLink />
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                        Models: {numTotalItems}
                     </Typography>
-                    <IconButton
-                        size="large"
-                        edge="end"
-                        color="inherit"
-                        aria-label="sort"
-                        aria-controls="sort-menu"
-                        aria-haspopup="true"
-                        onClick={handleSortMenuClick}
-                    >
-                        <SortIcon/>
-                    </IconButton>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'grey.900', borderRadius: 1, p: 0.5, ml: 1 }}>
+                            <InputBase
+                                placeholder="Filter by name…"
+                                inputProps={{ 'aria-label': 'filter by name' }}
+                                value={parameters.searchQuery}
+                                onChange={handleSearchChange}
+                                sx={{ color: 'white', ml: 1, flex: 1 }}
+                            />
+                            <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                <SearchIcon />
+                            </IconButton>
+                        </Box>
+                        <IconButton
+                            size="large"
+                            edge="end"
+                            color="inherit"
+                            aria-label="sort"
+                            aria-controls="sort-menu"
+                            aria-haspopup="true"
+                            onClick={handleSortMenuClick}
+                        >
+                            <SortIcon/>
+                        </IconButton>
+                    </Box>
                     <Menu
                         id="sort-menu"
                         anchorEl={sortAnchorEl}
@@ -129,7 +193,7 @@ const MainLayout = () => {
                 <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4, backgroundColor: '#fff' }}>
                     <Pagination
                         count={totalPages}
-                        page={page}
+                        page={parameters.page}
                         onChange={handlePageChange}
                         color={"standard"}
                         sx={{
