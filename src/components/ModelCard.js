@@ -117,11 +117,10 @@ const ModelCard = ({model}) => {
                             {model.pipeline_tag}
                         </Typography>
                     </Box>
-
                     <Box display="flex" alignItems="center">
-                        <FavoriteIcon sx={{marginRight: 1}}/>
+                        <DownloadIcon sx={{marginRight: 1}}/>
                         <Typography variant="subtitle1" color="text.secondary">
-                            {formatNumber(model.likes)}
+                            {formatNumber(model.downloads)}
                         </Typography>
                     </Box>
                 </Box>
@@ -133,12 +132,13 @@ const ModelCard = ({model}) => {
                         </Typography>
                     </Box>
                     <Box display="flex" alignItems="center">
-                        <DownloadIcon sx={{marginRight: 1}}/>
+                        <FavoriteIcon sx={{marginRight: 1}}/>
                         <Typography variant="subtitle1" color="text.secondary">
-                            {formatNumber(model.downloads)}
+                            {formatNumber(model.likes)}
                         </Typography>
                     </Box>
                 </Box>
+
             </CardContent>
         </Card>
     );

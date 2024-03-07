@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useMemo, useCallback} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import queryString from 'query-string';
 import {
     AppBar,
     Toolbar,
@@ -20,68 +19,73 @@ import InputBase from '@mui/material/InputBase';
 import axios from 'axios';
 import ModelCard from "./ModelCard";
 import LogoLink from "./LogoLink";
+import { debounce } from 'lodash';
+
+const useUrlParams = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const processUrlParams = (search) => {
+        const urlParams = new URLSearchParams(search);
+        let paramsFromUrl = Object.fromEntries(urlParams.entries());
+
+        return {
+            pipelineId: paramsFromUrl.pipelineId || 'all',
+            sort: paramsFromUrl.sort || 'trending',
+            page: parseInt(paramsFromUrl.page, 10) || 1,
+            searchQuery: paramsFromUrl.searchQuery || ''
+        };
+    };
+
+    const [params, setParams] = useState(() => processUrlParams(location.search));
+
+    useEffect(() => {
+        setParams(processUrlParams(location.search));
+    }, [location.search]);
+
+    const updateParams = (newParams) => {
+        const updatedParams = { ...params, ...newParams };
+        setParams(updatedParams);
+        const searchParams = new URLSearchParams(updatedParams).toString();
+        navigate(`?${searchParams}`);
+    };
+
+    return [params, updateParams];
+};
 
 const MainLayout = () => {
     // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
-    const navigate = useNavigate();
-    const location = useLocation();
 
-    const [parameters, setParameters] = useState({
-        pipelineId: null,
-        sort: 'trending',
-        page: 1,
-        searchQuery: '',
-    });
     const [pipelines, setPipelines] = useState([]);
     const [models, setModels] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [numTotalItems, setNumTotalItems] = useState(0);
     const [sortAnchorEl, setSortAnchorEl] = useState(null);
 
+    const [parameters, setParameters] = useUrlParams({
+        pipelineId: 'all',
+        sort: 'trending',
+        page: 1,
+        searchQuery: ''
+    });
+
+    const [inputValue, setInputValue] = useState(parameters.searchQuery);
+
     useEffect(() => {
         fetchPipelines();
     }, []);
 
     useEffect(() => {
-        const params = queryString.parse(location.search);
-        const updatedParameters = {
-            pipelineId: params.pipeline || null,
-            page: parseInt(params.page, 10) || 1,
-            searchQuery: params.search || '',
-            sort: params.sort || 'trending'
-        };
-
-        // Check if parameters actually changed to avoid unnecessary updates
-        if (JSON.stringify(parameters) !== JSON.stringify(updatedParameters)) {
-            setParameters(updatedParameters);
-        }
-    }, [location.search]);
-
-    useEffect(() => {
         fetchModels();
-    }, [location.search]);
-
-    useEffect(() => {
-        const query = queryString.stringify({
-            page: parameters.page,
-            search: encodeURIComponent(parameters.searchQuery),
-            sort: parameters.sort,
-            pipeline: parameters.pipelineId
-        });
-
-        const newSearch = `?${query}`;
-        if (location.search !== newSearch) {
-            navigate(newSearch);
-        }
-    }, [parameters]);
+    }, [parameters.pipelineId, parameters.sort, parameters.page, parameters.searchQuery]);
 
     const fetchPipelines = async () => {
         const response = await axios.get(`${baseUrl}/api/v1/pipelines`);
         setPipelines(response.data);
     };
 
-    const fetchModels = useCallback(async () => {
+    const fetchModels = async () => {
         const { pipelineId, sort, page, searchQuery } = parameters;
         let url = `${baseUrl}/api/v1/models?sort=${sort}&p=${page}`;
         if (pipelineId) url += `&pipeline=${pipelineId}`;
@@ -91,19 +95,32 @@ const MainLayout = () => {
         setModels(response.data.models);
         setNumTotalItems(response.data.numTotalItems);
         setTotalPages(Math.ceil(response.data.numTotalItems / response.data.numItemsPerPage));
-    }, [parameters]);
+    };
+
+    const debouncedSetSearchQuery = useCallback(
+        debounce((newQuery) => {
+            setParameters({ searchQuery: newQuery, page: 1 });
+        }, 300),
+        []
+    );
+
+    useEffect(() => {
+        setInputValue(parameters.searchQuery);
+    }, [parameters.searchQuery]);
 
     const handleSearchChange = (event) => {
-        setParameters(prev => ({ ...prev, searchQuery: event.target.value }));
+        setInputValue(event.target.value);
+        debouncedSetSearchQuery(event.target.value);
     };
 
     const handleSearchSubmit = (event) => {
         event.preventDefault();
-        fetchModels();
+        setParameters({ searchQuery: parameters.searchQuery, page: 1 });
     };
 
-    const handlePipelineClick = async (pipelineId) => {
-        setParameters(prev => ({ ...prev, pipelineId, page: 1 }));
+    const handlePipelineClick = (pipelineId) => {
+        setParameters({ pipelineId: pipelineId, page: 1 });
+
     };
 
     const handleSortMenuClick = (event) => {
@@ -113,19 +130,19 @@ const MainLayout = () => {
     const handleSortMenuClose = (sortOption) => {
         setSortAnchorEl(null);
         if (sortOption) {
-            setParameters(prev => ({ ...prev, sort: sortOption, page: 1, searchQuery: '' }));
+            setParameters({ sort: sortOption, page: 1 });
         }
     };
 
-    const generateTabElements = () => {
-        return pipelines.map((pipeline) => (
-            <Tab label={pipeline.label} key={pipeline.id} onClick={() => handlePipelineClick(pipeline.id)}/>
-        ));
+    const handlePageChange = (event, value) => {
+        setParameters({ page: value });
     };
 
-    const handlePageChange = (event, value) => {
-        setParameters(prev => ({ ...prev, page: value }));
-    };
+    const generateTabElements = useMemo(() => {
+        return pipelines.map((pipeline) => (
+            <Tab label={pipeline.label} key={pipeline.id} onClick={() => handlePipelineClick(pipeline.id)} />
+        ));
+    }, [pipelines]);
 
     return (
         <Box sx={{display: 'flex', height: '100vh'}}>
@@ -140,7 +157,7 @@ const MainLayout = () => {
                             <InputBase
                                 placeholder="Filter by name…"
                                 inputProps={{ 'aria-label': 'filter by name' }}
-                                value={parameters.searchQuery}
+                                value={inputValue}
                                 onChange={handleSearchChange}
                                 sx={{ color: 'white', ml: 1, flex: 1 }}
                             />
@@ -179,7 +196,7 @@ const MainLayout = () => {
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                 >
-                    {generateTabElements()}
+                    {generateTabElements}
                 </Tabs>
             </AppBar>
             <Box component="main" sx={{ flexGrow: 1, p: 3, paddingTop: '100px' }}>
