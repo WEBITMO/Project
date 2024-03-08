@@ -85,7 +85,11 @@ const ModelCard = ({model}) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-        navigate(`/${model.pipeline_tag}/${model.id}`);
+        if (model.pipeline_tag === 'text-generation') {
+            navigate(`/text-generation/${model.id.split('/')[1]}`);
+        } else {
+            navigate(`/${model.pipeline_tag}/${model.id}`);
+        }
     };
 
     return (
