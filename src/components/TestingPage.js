@@ -54,7 +54,7 @@ const useUrlParams = () => {
     return [params, updateParams];
 };
 
-const MainLayout = () => {
+const TestingPage = () => {
     // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -237,5 +237,5 @@ const MainLayout = () => {
       </Box>
     );
 }
-
 export default MainLayout;
+

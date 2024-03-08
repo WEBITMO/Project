@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-// import MainLayout from "./components/TestingPage";
+// import TestingPage from "./components/TestingPage";
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
-    //     <MainLayout/>
+    //     <TestingPage/>
         <App/>
     // </React.StrictMode>
 );

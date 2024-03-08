@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import PropTypes from "prop-types";
 
-const ImageClassifier = ({ selectedModel, isReadyToPredict }) => {
+const ImageClassificationComponent = ({ selectedModel, isReadyToPredict }) => {
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [prediction, setPrediction] = useState(null);
@@ -183,9 +183,9 @@ const ImageClassifier = ({ selectedModel, isReadyToPredict }) => {
     );
 };
 
-ImageClassifier.propTypes = {
+ImageClassificationComponent.propTypes = {
     selectedModel: PropTypes.string.isRequired,
     isReadyToPredict: PropTypes.bool.isRequired,
 };
 
-export default ImageClassifier;
+export default ImageClassificationComponent;
