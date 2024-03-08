@@ -151,8 +151,8 @@ const MainLayout = () => {
     };
 
     return (
-      <Box sx={{ display: 'flex', height: '100vh' }}>
-              <AppBar position="fixed">
+      <Box data-testid="main-layout" sx={{ display: 'flex', height: '100vh' }}>
+              <AppBar data-testid="AppBar" position="fixed">
                   <Toolbar>
                       <Box sx={{ boxShadow: '5',borderRadius:2, width: 'fit-content',padding: '8px' }}>
                           <LogoLink onClick={handleLogoClick} />
@@ -163,6 +163,7 @@ const MainLayout = () => {
                           </Typography>
                       </Box>
                       <Tabs
+                        data-testid="tabs"
                         value={selectedPipelineId || false}
                         variant="scrollable"
                         scrollButtons="auto"
@@ -179,8 +180,9 @@ const MainLayout = () => {
                           {generateTabElements}
                       </Tabs>
                       <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto',paddingLeft: '20px' }}>
-                          <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: 1, p: 0.5 }}>
+                          <Box component="form" data-testid="search-form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: 1, p: 0.5 }}>
                               <InputBase
+                                data-testid="search-input"
                                 placeholder="Filter by name…"
                                 inputProps={{ 'aria-label': 'filter by name' }}
                                 value={inputValue}
@@ -193,6 +195,7 @@ const MainLayout = () => {
                           </Box>
                           {showSortMenu &&(
                           <IconButton
+                            data-testid="sort-button"
                             size="large"
                             edge="end"
                             color="inherit"
@@ -224,13 +227,13 @@ const MainLayout = () => {
           <Box component="main" sx={{ flexGrow: 1, p: 3, paddingTop: '120px' }}>
               <Grid container spacing={2}>
                   {models.map((model) => (
-                    <Grid item xs={12} sm={6} md={4} key={model.id}>
+                    <Grid item xs={12} sm={6} md={4} key={model.id} data-testid="model-card">
                         <ModelCard model={model} />
                     </Grid>
                   ))}
               </Grid>
               {models.length > 0 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4, backgroundColor: 'white' }}>
+                <Box data-testid="pagination" sx={{ display: 'flex', justifyContent: 'center', marginTop: 4, backgroundColor: 'white' }}>
                     <Pagination
                       count={totalPages}
                       page={parameters.page}
