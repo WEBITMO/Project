@@ -163,7 +163,7 @@ const MainLayout = () => {
                       </Typography>
                   </Box>
                   <Tabs
-                    value={selectedPipelineId}
+                    value={selectedPipelineId || false}
                     variant="scrollable"
                     scrollButtons="auto"
                     allowScrollButtonsMobile
