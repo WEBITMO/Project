@@ -20,7 +20,7 @@ import axios from 'axios';
 import ModelCard from "./ModelCard";
 import LogoLink from "./LogoLink";
 import { debounce } from 'lodash';
-
+import { darken } from '@mui/system';
 const useUrlParams = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -56,6 +56,7 @@ const useUrlParams = () => {
 const MainLayout = () => {
     // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
 
     const [pipelines, setPipelines] = useState([]);
     const [models, setModels] = useState([]);
@@ -145,22 +146,32 @@ const MainLayout = () => {
         ));
     }, [pipelines]);
 
+    const handleLogoClick = () => {
+        setSelectedPipelineId(null);
+    };
+
     return (
       <Box sx={{ display: 'flex', height: '100vh' }}>
           <AppBar position="fixed">
               <Toolbar>
-                  <LogoLink />
-                  <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                      Models: {numTotalItems}
-                  </Typography>
+                  <Box sx={{ boxShadow: '5',borderRadius:2, width: 'fit-content',padding: '8px' }}>
+                      <LogoLink onClick={handleLogoClick} />
+                  </Box>
+                  <Box sx={{ marginLeft: '20px', marginRight:'600px' }}>
+                      <Typography variant="h6" noWrap component="div">
+                          Models: {numTotalItems}
+                      </Typography>
+                  </Box>
                   <Tabs
-                    value={selectedPipelineId}
+                    value={selectedPipelineId || false}
                     variant="scrollable"
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                     sx={{
+                        borderRadius:2,
+                        boxShadow:5,
                         '& .Mui-selected': {
-                            backgroundColor: 'indigo',
+                            backgroundColor: darken("#2b82d9", 0.4),
                             color: 'white',
                         },
                     }}
@@ -215,18 +226,18 @@ const MainLayout = () => {
                   ))}
               </Grid>
               {models.length > 0 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4, backgroundColor: 'white' }}>
                     <Pagination
                       count={totalPages}
                       page={parameters.page}
                       onChange={handlePageChange}
-                      color="primary"
+                      color={"primary"}
                       variant="outlined"
                       shape="rounded"
                       sx={{
                           borderRadius: '4px',
                           padding: '10px',
-                          backgroundColor: '#FFFFFF'
+                          backgroundColor: 'white'
                       }}
                     />
                 </Box>
