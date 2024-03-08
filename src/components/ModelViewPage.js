@@ -273,6 +273,10 @@ const ModelViewPage = () => {
                 {renderPipelineComponent()}
 
                 <Box sx={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px',
+                    '& img': {
+                        maxWidth: '100%', // Ограничиваем ширину изображений максимальной шириной родительского блока
+                        height: 'auto', // Сохраняем пропорции изображений
+                    },
                     '& h1': { fontSize: '1.5rem' }, // уменьшаем размер h1
                     '& h2': { fontSize: '1.4rem' }, // уменьшаем размер h2
                     '& h3': { fontSize: '1.3rem' }, // уменьшаем размер h3
