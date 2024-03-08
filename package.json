@@ -13,6 +13,7 @@
     "axios": "^1.6.7",
     "lodash": "^4.17.21",
     "mui-markdown": "^1.1.13",
+    "prop-types": "^15.8.1",
     "query-string": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
