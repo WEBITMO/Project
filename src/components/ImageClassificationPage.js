@@ -25,7 +25,9 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
     const [modelSize, setModelSize] = useState(0);
     const [localModelSize, setLocalModelSize] = useState(0);
     const [fetchInterval, setFetchInterval] = useState(initialFetchIntervalInSeconds);
-    const [downloadStatus, setDownloadStatus] = useState('idle'); // idle | downloading | completed | error
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [isModelDownloaded, setIsModelDownloaded] = useState(false);
 
     const fetchMarkdown = async () => {
         try {
@@ -33,6 +35,7 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
             setMarkdown(markdownResponse.data);
         } catch (error) {
             console.error('Error fetching markdown:', error);
+            setError('Error fetching markdown. Please try again later.');
         }
     };
 
@@ -42,6 +45,7 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
             setModelSize(remoteSizeResponse.data);
         } catch (error) {
             console.error('Error fetching remote size:', error);
+            setError('Error fetching remote size. Please try again later.');
         }
     };
 
@@ -51,35 +55,30 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
             setLocalModelSize(localSizeResponse.data);
         } catch (error) {
             console.error('Error fetching local model size:', error);
-        }
-    };
-
-    const fetchDownloadStatus = async () => {
-        try {
-            const response = await axios.get(`${baseUrl}/api/v1/model_download_status/${orgId}/${modelId}`);
-            setDownloadStatus(response.data.status === 'in_progress' ? 'downloading' : 'idle');
-        } catch (error) {
-            console.error('Error fetching download status:', error);
+            setError('Error fetching local model size. Please try again later.');
         }
     };
 
     const downloadModel = async () => {
-        if (localModelSize === modelSize) return;
-        setDownloadStatus('downloading');
+        setIsLoading(true);
+        setError('');
         try {
             await axios.get(`${baseUrl}/api/v1/model_download/${orgId}/${modelId}`);
+            setIsModelDownloaded(true);
         } catch (error) {
             console.error('Error downloading model:', error);
-            setDownloadStatus('error');
+            setError('Error downloading the model. Please try again later.');
         }
+        setIsLoading(false);
     };
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchDownloadStatus();
+            setIsLoading(true);
             await fetchRemoteSize();
             await fetchLocalModelSize();
             await fetchMarkdown();
+            setIsLoading(false);
         };
         fetchData();
     }, []);
@@ -87,60 +86,46 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
     useEffect(() => {
         const intervalMilliseconds = fetchInterval * 1000;
         let intervalId;
-
-        if (downloadStatus === 'downloading') {
+        if (modelSize && localModelSize < modelSize) {
             intervalId = setInterval(fetchLocalModelSize, intervalMilliseconds);
         }
-
         return () => {
             if (intervalId) clearInterval(intervalId);
         };
-    }, [fetchInterval, downloadStatus]);
+    }, [modelSize, localModelSize, fetchInterval]);
 
     useEffect(() => {
-        if (modelSize && localModelSize === modelSize) {
-            setDownloadStatus('completed');
+        if (localModelSize && modelSize && localModelSize === modelSize) {
+            setIsModelDownloaded(true);
         }
-    }, [modelSize, localModelSize]);
+    }, [localModelSize, modelSize]);
 
     return {
         markdown,
         modelSize,
         localModelSize,
-        downloadStatus,
+        isLoading,
+        error,
         fetchInterval,
         setFetchInterval,
+        isModelDownloaded,
         downloadModel
     };
 };
 
-const ModelViewPage = () => {
-    const {pipelineTag, orgId, modelId} = useParams();
+const ImageClassificationPage = () => {
+    const {orgId, modelId} = useParams();
     const {
-        markdown,
-        modelSize,
-        localModelSize,
-        downloadStatus,
-        fetchInterval,
-        setFetchInterval,
-        downloadModel
-    } = useModelData(orgId, modelId, 1);
+        markdown, modelSize, localModelSize, isLoading, error, fetchInterval,
+        setFetchInterval, isModelDownloaded, downloadModel
+    } = useModelData(orgId, modelId, 5);
 
     const handleIntervalChange = (event) => {
         setFetchInterval(Number(event.target.value));
     };
 
     const progress = modelSize ? (localModelSize / modelSize) * 100 : 0;
-    const buttonText = (() => {
-        switch (downloadStatus) {
-            case 'downloading': return 'Downloading...';
-            case 'completed': return 'Model Downloaded';
-            case 'error': return 'Download Failed - Retry?';
-            default: return 'Download Model';
-        }
-    })();
-    const isDownloadButtonDisabled = downloadStatus === 'downloading' || localModelSize === modelSize;
-    const isSelectDisabled = downloadStatus === 'completed';
+    const isDownloading = isLoading && !isModelDownloaded;
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
@@ -152,7 +137,7 @@ const ModelViewPage = () => {
             <Toolbar/>
             <Container component="main" sx={{mt: 8, mb: 4}}>
                 <Typography variant="h4" gutterBottom>
-                    {pipelineTag}
+                    Image Classification Pipeline
                 </Typography>
                 <Typography variant="body1">
                     Organization ID: {orgId}
@@ -160,6 +145,8 @@ const ModelViewPage = () => {
                 <Typography variant="body1">
                     Model ID: {modelId}
                 </Typography>
+
+                {error && <Typography variant="body1" color="error">Failed to fetch data: {error}</Typography>}
 
                 <Typography variant="body1">
                     Remote Size: {modelSize !== null ? formatBytes(modelSize) : 'Calculating...'}
@@ -170,26 +157,29 @@ const ModelViewPage = () => {
 
                 <Button
                     variant="contained"
-                    color={downloadStatus === 'completed' ? "success" : downloadStatus === 'error' ? "error" : "primary"}
-                    onClick={downloadModel}
-                    disabled={isDownloadButtonDisabled}
+                    color={isModelDownloaded ? "success" : "primary"}
+                    onClick={!isModelDownloaded ? downloadModel : undefined}
+                    sx={{m: 2}}
+                    disabled={isDownloading || isModelDownloaded}
                 >
-                    {buttonText}
+                    {isModelDownloaded ? "Model Downloaded" : isDownloading ? "Downloading..." : "Download Model"}
                 </Button>
 
-                <FormControl variant="outlined" sx={{m: 1, minWidth: 120}} disabled={isSelectDisabled}>
-                    <InputLabel>Fetch Interval</InputLabel>
-                    <Select
-                        value={fetchInterval}
-                        onChange={handleIntervalChange}
-                        label="Fetch Interval"
-                    >
-                        <MenuItem value={1}>1 second</MenuItem>
-                        <MenuItem value={5}>5 seconds</MenuItem>
-                        <MenuItem value={30}>30 seconds</MenuItem>
-                        <MenuItem value={60}>1 minute</MenuItem>
-                    </Select>
-                </FormControl>
+                {!isModelDownloaded && !isDownloading && (
+                    <FormControl variant="outlined" sx={{m: 1, minWidth: 120}}>
+                        <InputLabel>Fetch Interval</InputLabel>
+                        <Select
+                            value={fetchInterval}
+                            onChange={handleIntervalChange}
+                            label="Fetch Interval"
+                        >
+                            <MenuItem value={1}>1 second</MenuItem>
+                            <MenuItem value={5}>5 seconds</MenuItem>
+                            <MenuItem value={30}>30 seconds</MenuItem>
+                            <MenuItem value={60}>1 minute</MenuItem>
+                        </Select>
+                    </FormControl>
+                )}
 
                 <LinearProgress variant="determinate" value={progress}/>
                 <Typography variant="body2" sx={{mt: 1}}>
@@ -206,4 +196,4 @@ const ModelViewPage = () => {
     );
 };
 
-export default ModelViewPage;
+export default ImageClassificationPage;
