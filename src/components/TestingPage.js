@@ -20,6 +20,7 @@ import axios from 'axios';
 import ModelCard from "./ModelCard";
 import LogoLink from "./LogoLink";
 import { debounce } from 'lodash';
+import { useTheme } from '@mui/material/styles';
 
 const useUrlParams = () => {
     const navigate = useNavigate();
@@ -57,6 +58,7 @@ const MainLayout = () => {
     // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
+    const theme = useTheme();
     const [pipelines, setPipelines] = useState([]);
     const [models, setModels] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
@@ -214,31 +216,23 @@ const MainLayout = () => {
                     </Grid>
                   ))}
               </Grid>
-              <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4, backgroundColor: '#fff' }}>
-                  <Pagination
-                    count={totalPages}
-                    page={parameters.page}
-                    onChange={handlePageChange}
-                    color={"standard"}
-                    sx={{
-                        '& .MuiPaginationItem-root': {
-                            color: 'white',
-                        },
-                        '& .Mui-selected': {
-                            backgroundColor: 'primary.main',
-                            color: 'white',
-                        },
-                        '& .MuiPaginationItem-ellipsis': {
-                            color: 'white',
-                        },
-                        '& .MuiPaginationItem-page': {
-                            color: 'white',
-                        },
-                        borderRadius: '4px',
-                        padding: '10px',
-                    }}
-                  />
-              </Box>
+              {models.length > 0 && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+                    <Pagination
+                      count={totalPages}
+                      page={parameters.page}
+                      onChange={handlePageChange}
+                      color="primary"
+                      variant="outlined"
+                      shape="rounded"
+                      sx={{
+                          borderRadius: '4px',
+                          padding: '10px',
+                          backgroundColor: theme.palette.background.default
+                      }}
+                    />
+                </Box>
+              )}
           </Box>
       </Box>
     );
