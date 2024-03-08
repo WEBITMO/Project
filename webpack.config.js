@@ -1,8 +1,6 @@
-// eslint-disable-next-line no-undef
-const path = require('path');
+import path from "path";
 
-// eslint-disable-next-line no-undef
-module.exports = {
+export default {
     entry: './src/App.js', // Укажите путь к вашему основному JS-файлу
     output: {
         // eslint-disable-next-line no-undef
