@@ -73,7 +73,7 @@ const MainLayout = () => {
     });
 
     const [inputValue, setInputValue] = useState(parameters.searchQuery);
-
+    const showSortMenu = selectedPipelineId !== 'text-generation';
     useEffect(() => {
         fetchPipelines();
     }, []);
@@ -152,71 +152,75 @@ const MainLayout = () => {
 
     return (
       <Box sx={{ display: 'flex', height: '100vh' }}>
-          <AppBar position="fixed">
-              <Toolbar>
-                  <Box sx={{ boxShadow: '5',borderRadius:2, width: 'fit-content',padding: '8px' }}>
-                      <LogoLink onClick={handleLogoClick} />
-                  </Box>
-                  <Box sx={{ marginLeft: '20px', marginRight:'600px' }}>
-                      <Typography variant="h6" noWrap component="div">
-                          Models: {numTotalItems}
-                      </Typography>
-                  </Box>
-                  <Tabs
-                    value={selectedPipelineId || false}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    allowScrollButtonsMobile
-                    sx={{
-                        borderRadius:2,
-                        boxShadow:5,
-                        '& .Mui-selected': {
-                            backgroundColor: darken("#2b82d9", 0.4),
-                            color: 'white',
-                        },
-                    }}
-                  >
-                      {generateTabElements}
-                  </Tabs>
-                  <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto',paddingLeft: '20px' }}>
-                      <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: 1, p: 0.5 }}>
-                          <InputBase
-                            placeholder="Filter by name…"
-                            inputProps={{ 'aria-label': 'filter by name' }}
-                            value={inputValue}
-                            onChange={handleSearchChange}
-                            sx={{ color: 'black', ml: 1, flex: 1 }}
-                          />
-                          <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                              <SearchIcon />
-                          </IconButton>
+              <AppBar position="fixed">
+                  <Toolbar>
+                      <Box sx={{ boxShadow: '5',borderRadius:2, width: 'fit-content',padding: '8px' }}>
+                          <LogoLink onClick={handleLogoClick} />
                       </Box>
-                      <IconButton
-                        size="large"
-                        edge="end"
-                        color="inherit"
-                        aria-label="sort"
-                        aria-controls="sort-menu"
-                        aria-haspopup="true"
-                        onClick={handleSortMenuClick}
+                      <Box sx={{ marginLeft: '20px', marginRight:'600px' }}>
+                          <Typography variant="h6" noWrap component="div">
+                              Models: {numTotalItems}
+                          </Typography>
+                      </Box>
+                      <Tabs
+                        value={selectedPipelineId || false}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        allowScrollButtonsMobile
+                        sx={{
+                            borderRadius:2,
+                            boxShadow:5,
+                            '& .Mui-selected': {
+                                backgroundColor: darken("#2b82d9", 0.4),
+                                color: 'white',
+                            },
+                        }}
                       >
-                          <SortIcon/>
-                      </IconButton>
-                  </Box>
-                  <Menu
-                    id="sort-menu"
-                    anchorEl={sortAnchorEl}
-                    open={Boolean(sortAnchorEl)}
-                    onClose={() => handleSortMenuClose()}
-                  >
-                      <MenuItem onClick={() => handleSortMenuClose('trending')}>Trending</MenuItem>
-                      <MenuItem onClick={() => handleSortMenuClose('likes')}>Most likes</MenuItem>
-                      <MenuItem onClick={() => handleSortMenuClose('downloads')}>Most downloads</MenuItem>
-                      <MenuItem onClick={() => handleSortMenuClose('created')}>Recently created</MenuItem>
-                      <MenuItem onClick={() => handleSortMenuClose('updated')}>Recently updated</MenuItem>
-                  </Menu>
-              </Toolbar>
-          </AppBar>
+                          {generateTabElements}
+                      </Tabs>
+                      <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto',paddingLeft: '20px' }}>
+                          <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: 1, p: 0.5 }}>
+                              <InputBase
+                                placeholder="Filter by name…"
+                                inputProps={{ 'aria-label': 'filter by name' }}
+                                value={inputValue}
+                                onChange={handleSearchChange}
+                                sx={{ color: 'black', ml: 1, flex: 1 }}
+                              />
+                              <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                  <SearchIcon />
+                              </IconButton>
+                          </Box>
+                          {showSortMenu &&(
+                          <IconButton
+                            size="large"
+                            edge="end"
+                            color="inherit"
+                            aria-label="sort"
+                            aria-controls="sort-menu"
+                            aria-haspopup="true"
+                            onClick={handleSortMenuClick}
+                          >
+                              <SortIcon/>
+                          </IconButton>
+                            )}
+                      </Box>
+                      {showSortMenu &&(
+                      <Menu
+                        id="sort-menu"
+                        anchorEl={sortAnchorEl}
+                        open={Boolean(sortAnchorEl)}
+                        onClose={() => handleSortMenuClose()}
+                      >
+                          <MenuItem onClick={() => handleSortMenuClose('trending')}>Trending</MenuItem>
+                          <MenuItem onClick={() => handleSortMenuClose('likes')}>Most likes</MenuItem>
+                          <MenuItem onClick={() => handleSortMenuClose('downloads')}>Most downloads</MenuItem>
+                          <MenuItem onClick={() => handleSortMenuClose('created')}>Recently created</MenuItem>
+                          <MenuItem onClick={() => handleSortMenuClose('updated')}>Recently updated</MenuItem>
+                      </Menu>
+                      )}
+                  </Toolbar>
+              </AppBar>
           <Box component="main" sx={{ flexGrow: 1, p: 3, paddingTop: '120px' }}>
               <Grid container spacing={2}>
                   {models.map((model) => (
