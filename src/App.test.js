@@ -1,7 +1,7 @@
 /*
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import App from './App';
-import SpeechToTextPage from "./components/AudioPage";
+import AutomaticSpeechRecognitionComponent from "./components/AudioPage";
 
 // eslint-disable-next  -line no-undef
 it('handles model selection', async () => {
@@ -11,7 +11,7 @@ it('handles model selection', async () => {
     })
   );
 
-  render(<SpeechToTextPage />);
+  render(<AutomaticSpeechRecognitionComponent />);
   await waitFor(() => screen.getByRole('listitem'));
 
   global.fetch = jest.fn().mockImplementationOnce(() =>
@@ -24,7 +24,7 @@ it('handles model selection', async () => {
   });
 });
 it('handles audio file change', async () => {
-  render(<SpeechToTextPage />);
+  render(<AutomaticSpeechRecognitionComponent />);
   const fileInput = screen.getByLabelText(/upload audio/i);
   const testFile = new File(['audio'], 'test-audio.mp3', { type: 'audio/mp3' });
 
@@ -42,7 +42,7 @@ it('handles audio prediction', async () => {
     })
   );
 
-  render(<SpeechToTextPage />);
+  render(<AutomaticSpeechRecognitionComponent />);
   await waitFor(() => screen.getByRole('listitem'));
 
   fireEvent.click(screen.getAllByRole('listitem')[0]);

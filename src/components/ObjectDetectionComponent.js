@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Box, Button, CircularProgress } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const ImageSegmentationPage = ({ selectedModel, isReadyToPredict }) => {
+const ObjectDetectionComponent = ({ selectedModel, isReadyToPredict }) => {
     const [loading, setLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const [labelColors, setLabelColors] = useState({});
@@ -122,9 +122,9 @@ const ImageSegmentationPage = ({ selectedModel, isReadyToPredict }) => {
     );
 };
 
-ImageSegmentationPage.propTypes = {
+ObjectDetectionComponent.propTypes = {
     selectedModel: PropTypes.string.isRequired,
     isReadyToPredict: PropTypes.bool.isRequired,
 };
 
-export default ImageSegmentationPage;
+export default ObjectDetectionComponent;

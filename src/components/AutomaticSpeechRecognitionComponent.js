@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const SpeechToTextPage = ({ selectedModel, isReadyToPredict }) => {
+const AutomaticSpeechRecognitionComponent = ({ selectedModel, isReadyToPredict }) => {
     const [audio, setAudio] = useState(null);
     const [loading, setLoading] = useState(false);
     const [prediction, setPrediction] = useState(null);
@@ -68,9 +68,9 @@ const SpeechToTextPage = ({ selectedModel, isReadyToPredict }) => {
     );
 };
 
-SpeechToTextPage.propTypes = {
+AutomaticSpeechRecognitionComponent.propTypes = {
     selectedModel: PropTypes.string.isRequired,
     isReadyToPredict: PropTypes.bool.isRequired,
 };
 
-export default SpeechToTextPage;
+export default AutomaticSpeechRecognitionComponent;
