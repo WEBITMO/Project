@@ -204,14 +204,14 @@ const ModelViewPage = () => {
     };
 
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', alignItems: 'flex-start' }}>
             <AppBar position="fixed">
                 <Toolbar>
                     <LogoLink/>
                 </Toolbar>
             </AppBar>
             <Toolbar/>
-            <Container component="main" sx={{mt: 8, mb: 4}}>
+          <Container component="main" sx={{mt: 8, mb: 4,backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '5px'}}>
                 <Typography variant="h4" gutterBottom>
                     {pipelineTag}
                 </Typography>
@@ -229,47 +229,96 @@ const ModelViewPage = () => {
                     Local Size: {localModelSize !== null ? formatBytes(localModelSize) : 'Calculating...'}
                 </Typography>
 
-                <Button
-                    variant="contained"
-                    color={downloadStatus === 'completed' ? "success" : downloadStatus === 'error' ? "error" : "primary"}
-                    onClick={downloadModel}
-                    disabled={isDownloadButtonDisabled}
-                >
-                    {buttonText}
-                </Button>
-
-                <FormControl variant="outlined" sx={{m: 1, minWidth: 120}} disabled={isSelectDisabled}>
-                    <InputLabel>Fetch Interval</InputLabel>
-                    <Select
-                        value={fetchInterval}
-                        onChange={handleIntervalChange}
-                        label="Fetch Interval"
+                <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', gap:2 }}>
+                    {/* Кнопка "Download Model" */}
+                    <Button
+                      variant="contained"
+                      color={downloadStatus === 'completed' ? "success" : downloadStatus === 'error' ? "error" : "primary"}
+                      onClick={downloadModel}
+                      disabled={isDownloadButtonDisabled}
+                      sx={{ width: '20%', height: '40px' }} // Устанавливаем ширину кнопки
                     >
-                        <MenuItem value={1}>1 second</MenuItem>
-                        <MenuItem value={5}>5 seconds</MenuItem>
-                        <MenuItem value={30}>30 seconds</MenuItem>
-                        <MenuItem value={60}>1 minute</MenuItem>
-                    </Select>
-                </FormControl>
+                        {buttonText}
+                    </Button>
+                    <FormControl variant="outlined" sx={{ width: '12%' }} disabled={isSelectDisabled}>
+                        <InputLabel>Fetch Interval</InputLabel>
+                        <Select
+                          value={fetchInterval}
+                          onChange={handleIntervalChange}
+                          label="Fetch Interval"
+                          sx={{height:'40px'}}
+                        >
+                            <MenuItem value={1}>1 second</MenuItem>
+                            <MenuItem value={5}>5 seconds</MenuItem>
+                            <MenuItem value={30}>30 seconds</MenuItem>
+                            <MenuItem value={60}>1 minute</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleLoadModel}
+                      disabled={downloadStatus !== 'completed'}
+                      sx={{ width: '15%', height: '40px' }}
+                    >
+                        {loadButtonLabel}
+                    </Button>
+                </Box>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleLoadModel}
-                    disabled={downloadStatus !== 'completed'}
-                >
-                    {loadButtonLabel}
-                </Button>
-
-                <LinearProgress variant="determinate" value={progress}/>
+                <LinearProgress variant="determinate" value={progress} sx={{ marginTop: '10px', width: '100%', height: '8px' }}/>
                 <Typography variant="body2" sx={{mt: 1}}>
                     Download Progress: {progress.toFixed(2)}%
                 </Typography>
 
                 {renderPipelineComponent()}
 
-                <Box>
-                    <MuiMarkdown>
+                <Box sx={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px',
+                    '& h1': { fontSize: '1.5rem' }, // уменьшаем размер h1
+                    '& h2': { fontSize: '1.4rem' }, // уменьшаем размер h2
+                    '& h3': { fontSize: '1.3rem' }, // уменьшаем размер h3
+                    '& h4': { fontSize: '1.2rem' }, // уменьшаем размер h4
+                    '& h5': { fontSize: '1.1rem' }, // уменьшаем размер h5
+                    '& h6': { fontSize: '1rem' },
+                    '& h1, & h2, & h3, & h4, & h5, & h6': {
+                        margin: '20px 0', // Добавляем отступ сверху и снизу к заголовкам
+                    },
+                    '& p': {
+                        margin: '10px 0', // Добавляем отступ сверху и снизу к текстовым абзацам
+                    }}}>
+                    <MuiMarkdown
+                      components={{
+                          h1: ({ children }) => (
+                            <Typography variant="h5" sx={{ mt: '20px', mb: '10px' }}>
+                                {children}
+                            </Typography>
+                          ),
+                          h2: ({ children }) => (
+                            <Typography variant="h6" sx={{ mt: '20px', mb: '10px' }}>
+                                {children}
+                            </Typography>
+                          ),
+                          h3: ({ children }) => (
+                            <Typography variant="subtitle1" sx={{ mt: '20px', mb: '10px' }}>
+                                {children}
+                            </Typography>
+                          ),
+                          h4: ({ children }) => (
+                            <Typography variant="body1" sx={{ mt: '20px', mb: '10px' }}>
+                                {children}
+                            </Typography>
+                          ),
+                          h5: ({ children }) => (
+                            <Typography variant="body2" sx={{ mt: '20px', mb: '10px' }}>
+                                {children}
+                            </Typography>
+                          ),
+                          h6: ({ children }) => (
+                            <Typography variant="caption" sx={{ mt: '20px', mb: '10px' }}>
+                                {children}
+                            </Typography>
+                          ),
+                      }}
+                    >
                         {markdown}
                     </MuiMarkdown>
                 </Box>
