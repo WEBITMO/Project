@@ -8,6 +8,8 @@ import {Box, Container, FormControl, InputLabel, LinearProgress, MenuItem, Selec
 import MuiMarkdown from "mui-markdown";
 import Button from "@mui/material/Button";
 import ImageClassifier from './ImageClassifier';
+import ImageSegmentationPage from "./ImageSegmentationPage";
+import SpeechToTextPage from "./AudioPage";
 
 const formatBytes = (bytes, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
@@ -188,6 +190,19 @@ const ModelViewPage = () => {
     const isSelectDisabled = downloadStatus === 'completed';
     const isReadyToPredict = downloadStatus === 'completed' && modelLoadStatus === 'loaded';
 
+    const renderPipelineComponent = () => {
+        switch (pipelineTag) {
+            case 'image-classification':
+                return <ImageClassifier selectedModel={modelId} isReadyToPredict={isReadyToPredict} />;
+            case 'object-detection':
+                return <ImageSegmentationPage selectedModel={modelId} isReadyToPredict={isReadyToPredict} />;
+            case 'automatic-speech-recognition':
+                return <SpeechToTextPage selectedModel={modelId} isReadyToPredict={isReadyToPredict} />;
+            default:
+                return <div>Unsupported pipeline type</div>;
+        }
+    };
+
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
             <AppBar position="fixed">
@@ -251,7 +266,7 @@ const ModelViewPage = () => {
                     Download Progress: {progress.toFixed(2)}%
                 </Typography>
 
-                <ImageClassifier selectedModel={modelId} isReadyToPredict={isReadyToPredict} />
+                {renderPipelineComponent()}
 
                 <Box>
                     <MuiMarkdown>
