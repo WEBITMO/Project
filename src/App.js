@@ -11,7 +11,6 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 // import ImageSegmentationPage from "./components/ImageSegmentationPage";
 import MainLayout from "./components/TestingPage";
 import ModelViewPage from "./components/ImageClassificationPage";
-import ImagePage from "./components/ImagePage";
 
 // function App() {
 //     return (
@@ -42,7 +41,6 @@ function App() {
             <Routes>
                 <Route path="/" element={<MainLayout/>}/>
                 <Route path="/:pipelineTag/:orgId/:modelId" element={<ModelViewPage />} />
-                <Route path="/image" element={<ImagePage/>}/>
             </Routes>
         </Router>
     );

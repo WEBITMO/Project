@@ -7,6 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import {Box, Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Typography} from "@mui/material";
 import MuiMarkdown from "mui-markdown";
 import Button from "@mui/material/Button";
+import ImageClassifier from './ImageClassifier';
 
 const formatBytes = (bytes, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
@@ -17,7 +18,7 @@ const formatBytes = (bytes, decimals = 2) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
+const useModelData = (pipelineTag, orgId, modelId, initialFetchIntervalInSeconds) => {
     // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -26,6 +27,7 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
     const [localModelSize, setLocalModelSize] = useState(0);
     const [fetchInterval, setFetchInterval] = useState(initialFetchIntervalInSeconds);
     const [downloadStatus, setDownloadStatus] = useState('idle'); // idle | downloading | completed | error
+    const [modelLoadStatus, setModelLoadStatus] = useState('not_loaded'); // not_loaded | loaded
 
     const fetchMarkdown = async () => {
         try {
@@ -63,6 +65,33 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
         }
     };
 
+    const fetchModelLoadStatus = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/v1/model_load_status/${orgId}/${modelId}`);
+            setModelLoadStatus(response.data.status);
+        } catch (error) {
+            console.error('Error fetching model load status:', error);
+        }
+    };
+
+    const loadModel = async () => {
+        try {
+            await axios.get(`${baseUrl}/api/v1/${pipelineTag}/load/${orgId}/${modelId}`);
+            setModelLoadStatus('loaded');
+        } catch (error) {
+            console.error('Error loading model:', error);
+        }
+    };
+
+    const unloadModel = async () => {
+        try {
+            await axios.get(`${baseUrl}/api/v1/${pipelineTag}/unload/${orgId}/${modelId}`);
+            setModelLoadStatus('not_loaded');
+        } catch (error) {
+            console.error('Error unloading model:', error);
+        }
+    };
+
     const downloadModel = async () => {
         if (localModelSize === modelSize) return;
         setDownloadStatus('downloading');
@@ -77,6 +106,7 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
     useEffect(() => {
         const fetchData = async () => {
             await fetchDownloadStatus();
+            await fetchModelLoadStatus();
             await fetchRemoteSize();
             await fetchLocalModelSize();
             await fetchMarkdown();
@@ -110,7 +140,10 @@ const useModelData = (orgId, modelId, initialFetchIntervalInSeconds) => {
         downloadStatus,
         fetchInterval,
         setFetchInterval,
-        downloadModel
+        downloadModel,
+        modelLoadStatus,
+        loadModel,
+        unloadModel
     };
 };
 
@@ -123,11 +156,22 @@ const ModelViewPage = () => {
         downloadStatus,
         fetchInterval,
         setFetchInterval,
-        downloadModel
-    } = useModelData(orgId, modelId, 1);
+        downloadModel,
+        modelLoadStatus,
+        loadModel,
+        unloadModel
+    } = useModelData(pipelineTag, orgId, modelId, 1);
 
     const handleIntervalChange = (event) => {
         setFetchInterval(Number(event.target.value));
+    };
+
+    const handleLoadModel = () => {
+        if (modelLoadStatus === 'not_loaded') {
+            loadModel();
+        } else {
+            unloadModel();
+        }
     };
 
     const progress = modelSize ? (localModelSize / modelSize) * 100 : 0;
@@ -140,7 +184,9 @@ const ModelViewPage = () => {
         }
     })();
     const isDownloadButtonDisabled = downloadStatus === 'downloading' || localModelSize === modelSize;
+    const loadButtonLabel = modelLoadStatus === 'loaded' ? 'Unload Model' : 'Load Model';
     const isSelectDisabled = downloadStatus === 'completed';
+    const isReadyToPredict = downloadStatus === 'completed' && modelLoadStatus === 'loaded';
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
@@ -191,10 +237,21 @@ const ModelViewPage = () => {
                     </Select>
                 </FormControl>
 
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleLoadModel}
+                    disabled={downloadStatus !== 'completed'}
+                >
+                    {loadButtonLabel}
+                </Button>
+
                 <LinearProgress variant="determinate" value={progress}/>
                 <Typography variant="body2" sx={{mt: 1}}>
                     Download Progress: {progress.toFixed(2)}%
                 </Typography>
+
+                <ImageClassifier selectedModel={modelId} isReadyToPredict={isReadyToPredict} />
 
                 <Box>
                     <MuiMarkdown>
