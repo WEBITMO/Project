@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { Box, Button, CircularProgress, Typography, Select, MenuItem } from '@mui/material';
+import { Box, Button, Typography, Select, MenuItem } from '@mui/material';
 
 const ImageClassificationPage = () => {
     const [models, setModels] = useState([]);
@@ -221,7 +221,7 @@ const ImageClassificationPage = () => {
                 </Box>
             )}
 
-            {loading && <CircularProgress />}
+            {loading}
         </Box>
     );
 };
