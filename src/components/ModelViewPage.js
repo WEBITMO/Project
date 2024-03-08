@@ -4,7 +4,16 @@ import axios from 'axios';
 import LogoLink from "./LogoLink";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import {Box, Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Typography} from "@mui/material";
+import {
+    Box,
+    Container,
+    FormControl,
+    InputLabel,
+    LinearProgress,
+    MenuItem,
+    Select,
+    Typography
+} from "@mui/material";
 import MuiMarkdown from "mui-markdown";
 import Button from "@mui/material/Button";
 import ImageClassificationComponent from './ImageClassificationComponent';
