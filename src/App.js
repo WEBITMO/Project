@@ -10,7 +10,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 // import LocationAwareFooter from "./components/LocationAwareFooter";
 // import ImageSegmentationPage from "./components/ImageSegmentationPage";
 import MainLayout from "./components/TestingPage";
-import ModelViewPage from "./components/ImageClassificationPage";
+import ImageClassificationPage from "./components/ImageClassificationPage";
 import ImagePage from "./components/ImagePage";
 
 // function App() {
@@ -41,7 +41,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<MainLayout/>}/>
-                <Route path="/:pipelineTag/:orgId/:modelId" element={<ModelViewPage />} />
+                <Route path="/image-classification/:orgId/:modelId" element={<ImageClassificationPage />} />
                 <Route path="/image" element={<ImagePage/>}/>
             </Routes>
         </Router>
