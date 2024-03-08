@@ -217,7 +217,7 @@ const MainLayout = () => {
                             color: 'primary.main',
                         },
                         borderRadius: '4px',
-                        padding: '10px',
+                        padding: '10px'
                     }}
                   />
               </Box>
