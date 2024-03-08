@@ -1,0 +1,619 @@
+{
+  "activeFilters": {
+    "pipeline_tag": [
+      "text-generation"
+    ],
+    "library": [
+      "transformers"
+    ],
+    "dataset": [],
+    "language": [],
+    "license": [],
+    "other": []
+  },
+  "models": [
+    {
+      "author": "google",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/5dd96eb166059660ed1ee413/WtA3YYitedOr9n02eHfJe.png?w=200&h=200&f=face",
+        "fullname": "Google",
+        "name": "google",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 208942,
+      "gated": "manual",
+      "id": "google/gemma-7b",
+      "lastModified": "2024-02-28T14:51:22.000Z",
+      "likes": 1917,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "bigcode",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1659521200179-5e48005437cb5b49818287a5.png?w=200&h=200&f=face",
+        "fullname": "BigCode",
+        "name": "bigcode",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 14318,
+      "gated": false,
+      "id": "bigcode/starcoder2-15b",
+      "lastModified": "2024-03-04T13:32:49.000Z",
+      "likes": 344,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "google",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/5dd96eb166059660ed1ee413/WtA3YYitedOr9n02eHfJe.png?w=200&h=200&f=face",
+        "fullname": "Google",
+        "name": "google",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 122282,
+      "gated": "manual",
+      "id": "google/gemma-7b-it",
+      "lastModified": "2024-03-04T16:36:07.000Z",
+      "likes": 864,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "mistralai",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/62dac1c7a8ead43d20e3e17a/wrLf5yaGC6ng4XME70w6Z.png?w=200&h=200&f=face",
+        "fullname": "Mistral AI_",
+        "name": "mistralai",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 1054312,
+      "gated": false,
+      "id": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "lastModified": "2024-02-29T14:47:47.000Z",
+      "likes": 3174,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "bigcode",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1659521200179-5e48005437cb5b49818287a5.png?w=200&h=200&f=face",
+        "fullname": "BigCode",
+        "name": "bigcode",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 3298,
+      "gated": false,
+      "id": "bigcode/starcoder2-7b",
+      "lastModified": "2024-03-04T13:33:03.000Z",
+      "likes": 96,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "google",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/5dd96eb166059660ed1ee413/WtA3YYitedOr9n02eHfJe.png?w=200&h=200&f=face",
+        "fullname": "Google",
+        "name": "google",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 95618,
+      "gated": "manual",
+      "id": "google/gemma-2b",
+      "lastModified": "2024-02-22T00:11:44.000Z",
+      "likes": 494,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "bigcode",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1659521200179-5e48005437cb5b49818287a5.png?w=200&h=200&f=face",
+        "fullname": "BigCode",
+        "name": "bigcode",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 3883,
+      "gated": false,
+      "id": "bigcode/starcoder2-3b",
+      "lastModified": "2024-03-04T13:33:12.000Z",
+      "likes": 75,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "HuggingFaceH4",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/5f0c746619cb630495b814fd/j26aNEdiOgptZxJ6akGCC.png?w=200&h=200&f=face",
+        "fullname": "Hugging Face H4",
+        "name": "HuggingFaceH4",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": true
+      },
+      "downloads": 1362,
+      "gated": false,
+      "id": "HuggingFaceH4/zephyr-7b-gemma-v0.1",
+      "lastModified": "2024-03-03T18:07:47.000Z",
+      "likes": 75,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "meta-llama",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/646cf8084eefb026fb8fd8bc/oCTqufkdTkjyGodsx1vo1.png?w=200&h=200&f=face",
+        "fullname": "Meta Llama 2",
+        "name": "meta-llama",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 1186785,
+      "gated": "manual",
+      "id": "meta-llama/Llama-2-7b-chat-hf",
+      "lastModified": "2024-03-05T15:09:08.000Z",
+      "likes": 2930,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "mistralai",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/62dac1c7a8ead43d20e3e17a/wrLf5yaGC6ng4XME70w6Z.png?w=200&h=200&f=face",
+        "fullname": "Mistral AI_",
+        "name": "mistralai",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 1021321,
+      "gated": false,
+      "id": "mistralai/Mistral-7B-Instruct-v0.2",
+      "lastModified": "2024-02-29T11:14:54.000Z",
+      "likes": 1037,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "m-a-p",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/63839e9962badff4326cf360/k4Q7R4XLDMp_1VF4C6GEd.jpeg?w=200&h=200&f=face",
+        "fullname": "Multimodal Art Projection",
+        "name": "m-a-p",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 828,
+      "gated": false,
+      "id": "m-a-p/ChatMusician",
+      "lastModified": "2024-03-02T13:35:31.000Z",
+      "likes": 67,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "mistralai",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/62dac1c7a8ead43d20e3e17a/wrLf5yaGC6ng4XME70w6Z.png?w=200&h=200&f=face",
+        "fullname": "Mistral AI_",
+        "name": "mistralai",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 1256839,
+      "gated": false,
+      "id": "mistralai/Mistral-7B-v0.1",
+      "lastModified": "2023-12-11T19:27:24.000Z",
+      "likes": 2889,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "microsoft",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1583646260758-5e64858c87403103f9f1055d.png?w=200&h=200&f=face",
+        "fullname": "Microsoft",
+        "name": "microsoft",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 486035,
+      "gated": false,
+      "id": "microsoft/phi-2",
+      "lastModified": "2024-02-06T12:36:24.000Z",
+      "likes": 2887,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "abacaj",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1677644903536-62ceeb27e7f6014c0e9d9268.jpeg?w=200&h=200&f=face",
+        "fullname": "Anton Bacaj",
+        "name": "abacaj",
+        "type": "user",
+        "isPro": false,
+        "isHf": false
+      },
+      "downloads": 899,
+      "gated": false,
+      "id": "abacaj/phi-2-super",
+      "lastModified": "2024-03-02T15:45:40.000Z",
+      "likes": 53,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "togethercomputer",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1678734258201-6322ad266b1992383fa964ca.png?w=200&h=200&f=face",
+        "fullname": "Together",
+        "name": "togethercomputer",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 5608,
+      "gated": false,
+      "id": "togethercomputer/evo-1-131k-base",
+      "lastModified": "2024-02-27T07:53:52.000Z",
+      "likes": 50,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "vikhyatk",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/63117568fa95534e218da163/8h9zN8aKRxPLBnXW7sqY9.jpeg?w=200&h=200&f=face",
+        "fullname": "vik",
+        "name": "vikhyatk",
+        "type": "user",
+        "isPro": false,
+        "isHf": false
+      },
+      "downloads": 275,
+      "gated": false,
+      "id": "vikhyatk/moondream2",
+      "lastModified": "2024-03-05T12:41:49.000Z",
+      "likes": 50,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "ibm",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1642306366038-5fc0292de45c5468456e022b.jpeg?w=200&h=200&f=face",
+        "fullname": "IBM",
+        "name": "ibm",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 104,
+      "gated": false,
+      "id": "ibm/merlinite-7b",
+      "lastModified": "2024-03-05T14:01:15.000Z",
+      "likes": 49,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "yam-peleg",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/626bccd70b0b7652fd3100f0/cqlIljZI_ZbT3ytPbZcB3.jpeg?w=200&h=200&f=face",
+        "fullname": "Yam",
+        "name": "yam-peleg",
+        "type": "user",
+        "isPro": false,
+        "isHf": false
+      },
+      "downloads": 839,
+      "gated": false,
+      "id": "yam-peleg/Experiment26-7B",
+      "lastModified": "2024-02-27T21:30:21.000Z",
+      "likes": 46,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "gorilla-llm",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/6471b9f6094820190c324eec/ddi3FnmuRzprkkoK4ecjz.png?w=200&h=200&f=face",
+        "fullname": "Gorilla LLM (UC Berkeley)",
+        "name": "gorilla-llm",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 805,
+      "gated": false,
+      "id": "gorilla-llm/gorilla-openfunctions-v2",
+      "lastModified": "2024-03-04T07:48:42.000Z",
+      "likes": 43,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "google",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/5dd96eb166059660ed1ee413/WtA3YYitedOr9n02eHfJe.png?w=200&h=200&f=face",
+        "fullname": "Google",
+        "name": "google",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 105126,
+      "gated": "manual",
+      "id": "google/gemma-2b-it",
+      "lastModified": "2024-02-29T10:57:43.000Z",
+      "likes": 350,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "FuseAI",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/62ecbffd99112e99c5f7fded/u5-Y9vqFeXWAQag4qWtbA.png?w=200&h=200&f=face",
+        "fullname": "FuseAI",
+        "name": "FuseAI",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 746,
+      "gated": false,
+      "id": "FuseAI/FuseChat-7B-VaRM",
+      "lastModified": "2024-03-03T07:15:09.000Z",
+      "likes": 31,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "bigcode",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1659521200179-5e48005437cb5b49818287a5.png?w=200&h=200&f=face",
+        "fullname": "BigCode",
+        "name": "bigcode",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 16164,
+      "gated": "auto",
+      "id": "bigcode/starcoder",
+      "lastModified": "2024-02-15T09:24:46.000Z",
+      "likes": 2657,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "BioMistral",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/614c4f067e1c37ffc55c7515/9C3sV4eYS5Mkb5sTcYfSU.png?w=200&h=200&f=face",
+        "fullname": "BioMistral",
+        "name": "BioMistral",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 8312,
+      "gated": false,
+      "id": "BioMistral/BioMistral-7B",
+      "lastModified": "2024-02-21T20:53:27.000Z",
+      "likes": 289,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "mistralai",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/62dac1c7a8ead43d20e3e17a/wrLf5yaGC6ng4XME70w6Z.png?w=200&h=200&f=face",
+        "fullname": "Mistral AI_",
+        "name": "mistralai",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 188113,
+      "gated": false,
+      "id": "mistralai/Mixtral-8x7B-v0.1",
+      "lastModified": "2024-01-21T10:35:31.000Z",
+      "likes": 1384,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "abacusai",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/63128dd099791aa61d180c72/dJ6uR23m09M-YEafBpmea.png?w=200&h=200&f=face",
+        "fullname": "Abacus.AI, Inc.",
+        "name": "abacusai",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 11490,
+      "gated": false,
+      "id": "abacusai/Smaug-72B-v0.1",
+      "lastModified": "2024-02-23T17:48:01.000Z",
+      "likes": 372,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "fireworks-ai",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/64b6f3a72f5a966b9722de88/P05Y1uWzmIFLCFlGSBN1F.jpeg?w=200&h=200&f=face",
+        "fullname": "Fireworks.ai",
+        "name": "fireworks-ai",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 422,
+      "gated": false,
+      "id": "fireworks-ai/firefunction-v1",
+      "lastModified": "2024-02-24T01:00:12.000Z",
+      "likes": 79,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "teknium",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/6317aade83d8d2fd903192d9/erOwgMXc_CZih3uMoyTAp.jpeg?w=200&h=200&f=face",
+        "fullname": "Teknium",
+        "name": "teknium",
+        "type": "user",
+        "isPro": false,
+        "isHf": false
+      },
+      "downloads": 142036,
+      "gated": false,
+      "id": "teknium/OpenHermes-2.5-Mistral-7B",
+      "lastModified": "2024-02-19T17:53:06.000Z",
+      "likes": 682,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "HuggingFaceH4",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/5f0c746619cb630495b814fd/j26aNEdiOgptZxJ6akGCC.png?w=200&h=200&f=face",
+        "fullname": "Hugging Face H4",
+        "name": "HuggingFaceH4",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": true
+      },
+      "downloads": 564434,
+      "gated": false,
+      "id": "HuggingFaceH4/zephyr-7b-beta",
+      "lastModified": "2024-02-29T11:00:39.000Z",
+      "likes": 1333,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "m-a-p",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/63839e9962badff4326cf360/k4Q7R4XLDMp_1VF4C6GEd.jpeg?w=200&h=200&f=face",
+        "fullname": "Multimodal Art Projection",
+        "name": "m-a-p",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 3380,
+      "gated": false,
+      "id": "m-a-p/OpenCodeInterpreter-DS-6.7B",
+      "lastModified": "2024-03-03T11:45:14.000Z",
+      "likes": 87,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    },
+    {
+      "author": "ibm",
+      "authorData": {
+        "avatarUrl": "https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/1642306366038-5fc0292de45c5468456e022b.jpeg?w=200&h=200&f=face",
+        "fullname": "IBM",
+        "name": "ibm",
+        "type": "org",
+        "isHf": false,
+        "isEnterprise": false
+      },
+      "downloads": 1556,
+      "gated": false,
+      "id": "ibm/labradorite-13b",
+      "lastModified": "2024-03-05T14:01:39.000Z",
+      "likes": 54,
+      "pipeline_tag": "text-generation",
+      "private": false,
+      "repoType": "model",
+      "isLikedByUser": false
+    }
+  ],
+  "numItemsPerPage": 30,
+  "numTotalItems": 59353,
+  "pageIndex": 0
+}

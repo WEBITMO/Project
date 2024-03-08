@@ -1,0 +1,22 @@
+[
+  {
+    "id": "text-generation",
+    "label": "Text Generation",
+    "subType": "nlp"
+  },
+  {
+    "id": "image-classification",
+    "label": "Image Classification",
+    "subType": "cv"
+  },
+  {
+    "id": "object-detection",
+    "label": "Object Detection",
+    "subType": "cv"
+  },
+  {
+    "id": "automatic-speech-recognition",
+    "label": "Speech Recognition",
+    "subType": "audio"
+  }
+]
