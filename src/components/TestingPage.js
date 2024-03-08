@@ -20,7 +20,6 @@ import axios from 'axios';
 import ModelCard from "./ModelCard";
 import LogoLink from "./LogoLink";
 import { debounce } from 'lodash';
-import { useTheme } from '@mui/material/styles';
 
 const useUrlParams = () => {
     const navigate = useNavigate();
@@ -58,7 +57,6 @@ const TestingPage = () => {
     // eslint-disable-next-line no-undef
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-    const theme = useTheme();
     const [pipelines, setPipelines] = useState([]);
     const [models, setModels] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
@@ -228,7 +226,7 @@ const TestingPage = () => {
                       sx={{
                           borderRadius: '4px',
                           padding: '10px',
-                          backgroundColor: theme.palette.background.default
+                          backgroundColor: '#FFFFFF'
                       }}
                     />
                 </Box>
